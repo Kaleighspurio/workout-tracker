@@ -1,198 +1,226 @@
 // get all workout data from back-end
 
-fetch("/api/workouts/range")
-  .then(response => {
+fetch('/api/workouts/range')
+  .then((response) => {
     return response.json();
   })
-  .then(data => {
+  .then((data) => {
     populateChart(data);
   });
 
+API.getWorkoutsInRange();
 
-API.getWorkoutsInRange()
-
-  function generatePalette() {
-    const arr = [
-    "#003f5c",
-    "#2f4b7c",
-    "#665191",
-    "#a05195",
-    "#d45087",
-    "#f95d6a",
-    "#ff7c43",
-    "ffa600",
-    "#003f5c",
-    "#2f4b7c",
-    "#665191",
-    "#a05195",
-    "#d45087",
-    "#f95d6a",
-    "#ff7c43",
-    "ffa600"
-  ]
+function generatePalette() {
+  const arr = [
+    '#003f5c',
+    '#2f4b7c',
+    '#665191',
+    '#a05195',
+    '#d45087',
+    '#f95d6a',
+    '#ff7c43',
+    'ffa600',
+    '#003f5c',
+    '#2f4b7c',
+    '#665191',
+    '#a05195',
+    '#d45087',
+    '#f95d6a',
+    '#ff7c43',
+    'ffa600',
+    '#003f5c',
+    '#2f4b7c',
+    '#665191',
+    '#a05195',
+    '#d45087',
+    '#f95d6a',
+    '#ff7c43',
+    'ffa600',
+    '#003f5c',
+    '#2f4b7c',
+    '#665191',
+    '#a05195',
+    '#d45087',
+    '#f95d6a',
+    '#ff7c43',
+    'ffa600',
+  ];
 
   return arr;
-  }
+}
 function populateChart(data) {
-  console.log(data)
-  let durations = duration(data);
-  let pounds = calculateTotalWeight(data);
-  let workouts = workoutNames(data);
+  // Lets just use the last 10 workouts to display the data
+  const reducedData = data.slice(-10);
+  console.log(reducedData);
+  // I added this so the date will appear on the chart
+  const dates = [];
+  reducedData.forEach((workout) => {
+    date = workout.day;
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    dates.push(new Date(date).toLocaleDateString(options));
+  });
+  console.log(dates);
+
+  let durations = duration(reducedData);
+  let pounds = calculateTotalWeight(reducedData);
+  let workouts = workoutNames(reducedData);
+  // let poundsPerExercise = poundsPerExercise(reducedData);
+  // let durationPerExcercise = durationPerExcercise(reducedData);
   const colors = generatePalette();
 
-  let line = document.querySelector("#canvas").getContext("2d");
-  let bar = document.querySelector("#canvas2").getContext("2d");
-  let pie = document.querySelector("#canvas3").getContext("2d");
-  let pie2 = document.querySelector("#canvas4").getContext("2d");
+  let line = document.querySelector('#canvas').getContext('2d');
+  let bar = document.querySelector('#canvas2').getContext('2d');
+  let pie = document.querySelector('#canvas3').getContext('2d');
+  let pie2 = document.querySelector('#canvas4').getContext('2d');
 
-  // **** This is silly because it will only ever display the first 7 workouts in the database..... 
+  // **** This is silly because it will only ever display the first 7 workouts in the database.....
   // It will never display the newer ones past the 1st 7....
   // And the days of the week won't necessarily line up with
   // the day that the workout was done on.
   // TODO: Make this better...
   let lineChart = new Chart(line, {
-    type: "line",
+    type: 'line',
     data: {
-      labels: [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-      ],
+      // changed this so that the actual date of the workouts would appear instead of an arbitrary weekday.
+      labels: dates,
       datasets: [
         {
-          label: "Workout Duration In Minutes",
-          backgroundColor: "red",
-          borderColor: "red",
+          label: 'Workout Duration In Minutes',
+          backgroundColor: 'red',
+          borderColor: 'red',
           data: durations,
-          fill: false
-        }
-      ]
+          fill: false,
+        },
+      ],
     },
     options: {
       responsive: true,
       title: {
-        display: true
+        display: true,
       },
       scales: {
         xAxes: [
           {
             display: true,
             scaleLabel: {
-              display: true
-            }
-          }
+              display: true,
+            },
+          },
         ],
         yAxes: [
           {
             display: true,
             scaleLabel: {
-              display: true
-            }
-          }
-        ]
-      }
-    }
+              display: true,
+            },
+          },
+        ],
+      },
+    },
   });
 
   let barChart = new Chart(bar, {
-    type: "bar",
+    type: 'bar',
     data: {
-      labels: [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ],
+      labels: dates,
       datasets: [
         {
-          label: "Pounds",
+          label: 'Pounds',
           data: pounds,
           backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)"
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
           ],
           borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-            "rgba(255, 159, 64, 1)"
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
           ],
-          borderWidth: 1
-        }
-      ]
+          borderWidth: 1,
+        },
+      ],
     },
     options: {
       title: {
         display: true,
-        text: "Pounds Lifted"
+        text: 'Pounds Lifted',
       },
       scales: {
         yAxes: [
           {
             ticks: {
-              beginAtZero: true
-            }
-          }
-        ]
-      }
-    }
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
   });
 
   let pieChart = new Chart(pie, {
-    type: "pie",
+    type: 'pie',
     data: {
       labels: workouts,
       datasets: [
         {
-          label: "Excercises Performed",
+          label: 'Excercises Performed',
           backgroundColor: colors,
-          data: durations
-        }
-      ]
+          // Todo: Fix this
+          data: durationPerExcercise(reducedData),
+        },
+      ],
     },
     options: {
       title: {
         display: true,
-        text: "Excercises Performed"
-      }
-    }
+        text: 'Excercises Performed (minutes)',
+      },
+    },
   });
 
   let donutChart = new Chart(pie2, {
-    type: "doughnut",
+    type: 'doughnut',
     data: {
       labels: workouts,
       datasets: [
         {
-          label: "Excercises Performed",
+          label: 'Excercises Performed (pounds)',
           backgroundColor: colors,
-          data: pounds
-        }
-      ]
+          // Todo: Fix this
+          data: poundsPerExercise(reducedData),
+        },
+      ],
     },
     options: {
       title: {
         display: true,
-        text: "Excercises Performed"
-      }
-    }
+        text: 'Excercises Performed (pounds)',
+      },
+    },
   });
 }
 
-// ***** I changed this so that it calculates the total workout duration
+// ***** I changed this so that it calculates the total workout duration for the line graph
 function duration(data) {
   let durations = [];
   data.forEach((workout) => {
@@ -201,23 +229,60 @@ function duration(data) {
     exercises.forEach((exercise) => {
       totalDuration = exercise.duration + totalDuration;
     });
-    durations.push(totalDuration)
+    durations.push(totalDuration);
   });
-  
+
   // data.forEach(workout => {
   //   workout.exercises.forEach(exercise => {
   //     durations.push(exercise.duration);
   //   });
   // });
-console.log(durations);
+  console.log(durations);
   return durations;
 }
 
-function calculateTotalWeight(data) {
-  let total = [];
+function durationPerExcercise(data) {
+  let durations = [];
 
   data.forEach(workout => {
     workout.exercises.forEach(exercise => {
+      durations.push(exercise.duration);
+    });
+  });
+
+  return durations;
+
+}
+
+// I fixed/refactored this so that is displays information that makes sense.
+// It now adds together the weights for each workout and displays them correctly on the chart
+// (it was functional with the starter code, but wasn't logically displayed.)
+function calculateTotalWeight(data) {
+  console.log(data, 'this is the data');
+  const totals = [];
+  data.forEach((workout) => {
+    const exercises = workout.exercises;
+    let workoutTotalWeight = 0;
+    exercises.forEach((exercise) => {
+      if (exercise.weight) {
+        workoutTotalWeight = workoutTotalWeight + exercise.weight;
+      }
+    });
+    // push each totalweight to the totals array
+    totals.push(workoutTotalWeight);
+  });
+  console.log(
+    totals,
+    'these are the total weights for the most recent 10 workouts'
+  );
+  return totals;
+}
+
+function poundsPerExercise(data) {
+  let total = [];
+
+  data.forEach((workout) => {
+    workout.exercises.forEach((exercise) => {
       total.push(exercise.weight);
     });
   });
@@ -228,11 +293,12 @@ function calculateTotalWeight(data) {
 function workoutNames(data) {
   let workouts = [];
 
-  data.forEach(workout => {
-    workout.exercises.forEach(exercise => {
+  data.forEach((workout) => {
+    workout.exercises.forEach((exercise) => {
+      console.log(exercise, 'these should be all the exercises');
       workouts.push(exercise.name);
     });
   });
-  
+  console.log(workouts, 'These are all the workouts');
   return workouts;
 }
