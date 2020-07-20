@@ -19,9 +19,9 @@ app.use(express.static('public'));
 app.use('/', htmlRoutes);
 app.use('/api', apiRoutes);
 
-let MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/workout';
+let MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/workout';
 
-mongoose.connect(MONGO_URI, { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);
