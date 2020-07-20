@@ -11,10 +11,12 @@ const WorkoutSchema = new Schema({
     {
       type: {
         type: String,
+        trim: true,
         required: true,
       },
       name: {
         type: String,
+        trim: true,
         required: true,
       },
       duration: {
@@ -28,29 +30,8 @@ const WorkoutSchema = new Schema({
       sets: Number,
     },
   ],
-  totalDuration: {
-    type: Number,
-    // get: 
-    // set: (exercises) => {
-    //     let totalDuration = 0;
-    //     exercises.forEach((exercise) => {
-    //         totalDuration += exercise.duration;
-    //     });
-    //     return totalDuration;
-    // },
-    required: true,
-  },
 });
 
-// const exercises = WorkoutSchema.get(exercises);
-
-// WorkoutSchema.totalDuration.set((exercises) => {
-//   let totalDuration = 0;
-//   exercises.forEach((exercise) => {
-//     totalDuration += exercise.duration;
-//   });
-//   return totalDuration;
-// });
 
 const Workout = mongoose.model('Workout', WorkoutSchema);
 
