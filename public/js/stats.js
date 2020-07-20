@@ -44,6 +44,7 @@ function populateChart(data) {
   let pie = document.querySelector("#canvas3").getContext("2d");
   let pie2 = document.querySelector("#canvas4").getContext("2d");
 
+  // **** This is silly because it will only ever display the first 7 workouts in the database..... It will never display the newer ones past the 1st 7....
   let lineChart = new Chart(line, {
     type: "line",
     data: {
@@ -186,15 +187,24 @@ function populateChart(data) {
   });
 }
 
+// ***** I changed this so that it calculates the total workout duration
 function duration(data) {
   let durations = [];
-
-  data.forEach(workout => {
-    workout.exercises.forEach(exercise => {
-      durations.push(exercise.duration);
+  data.forEach((workout) => {
+    const exercises = workout.exercises;
+    let totalDuration = 0;
+    exercises.forEach((exercise) => {
+      totalDuration = exercise.duration + totalDuration;
     });
+    durations.push(totalDuration)
   });
-
+  
+  // data.forEach(workout => {
+  //   workout.exercises.forEach(exercise => {
+  //     durations.push(exercise.duration);
+  //   });
+  // });
+console.log(durations);
   return durations;
 }
 
