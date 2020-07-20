@@ -7,8 +7,9 @@ const API = {
       console.log(err)
     }
     const json = await res.json();
-
-    return json[json.length - 1];
+// console.log(json);
+return json;
+    // return json[json.length - 1];
   },
   async addExercise(data) {
     const id = location.search.split("=")[1];
@@ -24,6 +25,7 @@ const API = {
     return json;
   },
   async createWorkout(data = {}) {
+    console.log(data, "this should be post data");
     const res = await fetch("/api/workouts", {
       method: "POST",
       body: JSON.stringify(data),
