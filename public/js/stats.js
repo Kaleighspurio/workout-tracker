@@ -185,7 +185,6 @@ function populateChart(data) {
         {
           label: 'Excercises Performed',
           backgroundColor: colors,
-          // Todo: Fix this
           data: durationPerExcercise(reducedData),
         },
       ],
@@ -206,7 +205,6 @@ function populateChart(data) {
         {
           label: 'Excercises Performed (pounds)',
           backgroundColor: colors,
-          // Todo: Fix this
           data: poundsPerExercise(reducedData),
         },
       ],
@@ -221,6 +219,7 @@ function populateChart(data) {
 }
 
 // ***** I changed this so that it calculates the total workout duration for the line graph
+// before it only took the duration of the first exercise.
 function duration(data) {
   let durations = [];
   data.forEach((workout) => {
@@ -232,15 +231,12 @@ function duration(data) {
     durations.push(totalDuration);
   });
 
-  // data.forEach(workout => {
-  //   workout.exercises.forEach(exercise => {
-  //     durations.push(exercise.duration);
-  //   });
-  // });
   console.log(durations);
   return durations;
 }
 
+// This function is only used on the first pie chart to display
+// it displays the duration of each individual exercise
 function durationPerExcercise(data) {
   let durations = [];
 
@@ -256,9 +252,8 @@ function durationPerExcercise(data) {
 
 // I fixed/refactored this so that is displays information that makes sense.
 // It now adds together the weights for each workout and displays them correctly on the chart
-// (it was functional with the starter code, but wasn't logically displayed.)
+// (it was functional with the starter code, but wasn't logically displayed- it didn't add together the weight of all exercises if there would multiple exercises per workout. Now it does)
 function calculateTotalWeight(data) {
-  console.log(data, 'this is the data');
   const totals = [];
   data.forEach((workout) => {
     const exercises = workout.exercises;
@@ -271,10 +266,6 @@ function calculateTotalWeight(data) {
     // push each totalweight to the totals array
     totals.push(workoutTotalWeight);
   });
-  console.log(
-    totals,
-    'these are the total weights for the most recent 10 workouts'
-  );
   return totals;
 }
 
@@ -295,10 +286,9 @@ function workoutNames(data) {
 
   data.forEach((workout) => {
     workout.exercises.forEach((exercise) => {
-      console.log(exercise, 'these should be all the exercises');
       workouts.push(exercise.name);
     });
   });
-  console.log(workouts, 'These are all the workouts');
+
   return workouts;
 }
