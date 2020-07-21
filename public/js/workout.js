@@ -12,7 +12,6 @@ async function initWorkout() {
     lastWorkout.exercises.forEach((exercise) => {
       totalDuration = totalDuration + exercise.duration;
     });
-    console.log(totalDuration);
     const workoutSummary = {
       date: formatDate(lastWorkout.day),
       // and modified this
