@@ -3,10 +3,14 @@ const router = require('express').Router();
 const db = require('../models');
 
 router.get('/workouts', (req, res) => {
-  db.Workout.findOne({}, {}, { sort: { day: -1 } }).then((dbWorkout) => {
-    console.log(dbWorkout);
-    res.json(dbWorkout);
-  });
+  db.Workout.findOne({}, {}, { sort: { day: -1 } })
+    .then((dbWorkout) => {
+      console.log(dbWorkout);
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 router.put('/workouts/:id', (req, res) => {
@@ -15,12 +19,12 @@ router.put('/workouts/:id', (req, res) => {
     { _id: req.params.id },
     { $push: { exercises: req.body } }
   )
-  .then(dbWorkout => {
-    res.json(dbWorkout);
-  })
-  .catch(err => {
-    console.log(err);
-  });
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 router.post('/workouts', (req, res) => {
@@ -36,10 +40,14 @@ router.post('/workouts', (req, res) => {
 });
 
 router.get('/workouts/range', (req, res) => {
-  db.Workout.find({}).then((dbWorkout) => {
-    console.log(dbWorkout);
-    res.json(dbWorkout);
-  });
+  db.Workout.find({})
+    .then((dbWorkout) => {
+      console.log(dbWorkout);
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = router;

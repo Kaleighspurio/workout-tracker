@@ -10,7 +10,7 @@ fetch('/api/workouts/range')
 
 API.getWorkoutsInRange();
 
-function generatePalette() {
+const generatePalette = () => {
   const arr = [
     '#003f5c',
     '#2f4b7c',
@@ -48,11 +48,11 @@ function generatePalette() {
 
   return arr;
 }
-function populateChart(data) {
+const populateChart = (data) => {
   // Lets just use the last 10 workouts to display the data
   const reducedData = data.slice(-10);
   console.log(reducedData);
-  // I added this so the date will appear on the chart
+  // I added this so the date will appear on the chart, rather than an arbitrary day of the week
   const dates = [];
   reducedData.forEach((workout) => {
     date = workout.day;
@@ -64,13 +64,10 @@ function populateChart(data) {
     };
     dates.push(new Date(date).toLocaleDateString(options));
   });
-  console.log(dates);
 
   let durations = duration(reducedData);
   let pounds = calculateTotalWeight(reducedData);
   let workouts = workoutNames(reducedData);
-  // let poundsPerExercise = poundsPerExercise(reducedData);
-  // let durationPerExcercise = durationPerExcercise(reducedData);
   const colors = generatePalette();
 
   let line = document.querySelector('#canvas').getContext('2d');
@@ -102,6 +99,7 @@ function populateChart(data) {
       responsive: true,
       title: {
         display: true,
+        text: 'Workout Duration'
       },
       scales: {
         xAxes: [
@@ -185,6 +183,7 @@ function populateChart(data) {
         {
           label: 'Excercises Performed',
           backgroundColor: colors,
+          // changed this so that it takes info from each exerise, instead of just the first exercise of a workout
           data: durationPerExcercise(reducedData),
         },
       ],
@@ -205,6 +204,7 @@ function populateChart(data) {
         {
           label: 'Excercises Performed (pounds)',
           backgroundColor: colors,
+          // changed this so that it takes info from each exerise, instead of just the first exercise of a workout
           data: poundsPerExercise(reducedData),
         },
       ],
@@ -218,9 +218,9 @@ function populateChart(data) {
   });
 }
 
-// ***** I changed this so that it calculates the total workout duration for the line graph
+/* I changed this so that it calculates the total workout duration for the line graph if there are multiple exercises in a workout */
 // before it only took the duration of the first exercise.
-function duration(data) {
+const duration = (data) => {
   let durations = [];
   data.forEach((workout) => {
     const exercises = workout.exercises;
@@ -237,7 +237,7 @@ function duration(data) {
 
 // This function is only used on the first pie chart to display
 // it displays the duration of each individual exercise
-function durationPerExcercise(data) {
+const durationPerExcercise = (data) => {
   let durations = [];
 
   data.forEach(workout => {
@@ -250,10 +250,10 @@ function durationPerExcercise(data) {
 
 }
 
-// I fixed/refactored this so that is displays information that makes sense.
-// It now adds together the weights for each workout and displays them correctly on the chart
-// (it was functional with the starter code, but wasn't logically displayed- it didn't add together the weight of all exercises if there would multiple exercises per workout. Now it does)
-function calculateTotalWeight(data) {
+ /* I fixed/refactored this so that is displays information that makes sense.
+ It now adds together the weights for each workout if there are multiple exercises and displays them correctly on the chart
+ (it was functional with the starter code, but wasn't logically displayed- it didn't add together the weight of all exercises if there would multiple exercises per workout. Now it does) */
+const calculateTotalWeight = (data) => {
   const totals = [];
   data.forEach((workout) => {
     const exercises = workout.exercises;
@@ -269,7 +269,7 @@ function calculateTotalWeight(data) {
   return totals;
 }
 
-function poundsPerExercise(data) {
+const poundsPerExercise = (data) => {
   let total = [];
 
   data.forEach((workout) => {
@@ -281,7 +281,7 @@ function poundsPerExercise(data) {
   return total;
 }
 
-function workoutNames(data) {
+const workoutNames = (data) => {
   let workouts = [];
 
   data.forEach((workout) => {

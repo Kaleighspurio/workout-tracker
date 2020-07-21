@@ -7,7 +7,7 @@ async function initWorkout() {
       .setAttribute('href', `/exercise?id=${lastWorkout._id}`);
 
     // I added this...
-    // It addes together the duration of all the excercises in a single workout.
+    // It adds together the duration of all the excercises in a single workout.
     let totalDuration = 0;
     lastWorkout.exercises.forEach((exercise) => {
       totalDuration = totalDuration + exercise.duration;
