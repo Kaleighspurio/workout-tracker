@@ -9,12 +9,11 @@ router.get('/workouts', (req, res) => {
       res.json(dbWorkout);
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json(err)
     });
 });
 
 router.put('/workouts/:id', (req, res) => {
-  console.log(req.body, 'This is in the put');
   db.Workout.updateOne(
     { _id: req.params.id },
     { $push: { exercises: req.body } }
@@ -23,19 +22,18 @@ router.put('/workouts/:id', (req, res) => {
       res.json(dbWorkout);
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json(err)
     });
 });
 
 router.post('/workouts', (req, res) => {
-  console.log(req.body, 'this is in the post');
   db.Workout.create(req.body)
     .then((dbWorkout) => {
       console.log(dbWorkout, 'workout posted');
       res.json(dbWorkout);
     })
     .catch((err) => {
-      res.json(err);
+      res.status(500).json(err)
     });
 });
 
@@ -46,7 +44,7 @@ router.get('/workouts/range', (req, res) => {
       res.json(dbWorkout);
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).json(err)
     });
 });
 
