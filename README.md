@@ -20,3 +20,7 @@ After cloning the repository, run `npm install` in your terminal command line to
 This application is deployed on heroku.  Try it out [HERE](https://sleepy-gorge-81067.herokuapp.com/)!
 
 ### Screenshots
+
+![Screenshot of Exercise entry](public/images/Screen%20Shot%202020-07-25%20at%209.16.11%20AM.png)
+
+![Screenshot of App](public/images/Screen%20Shot%202020-07-25%20at%209.11.19%20AM.png)
